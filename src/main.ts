@@ -6,6 +6,7 @@ import { AuthTokenService } from './modules/identity/auth-token.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
 
   // Global Validation Pipe that uses class-validator and class-transformer
   app.useGlobalPipes(
@@ -27,47 +28,49 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('Services API')
-    .setDescription('API documentation for Services')
-    .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'jwtAuth',
-    )
-    .build();
+  if (process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Services API')
+      .setDescription('API documentation for Services')
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+        'jwtAuth',
+      )
+      .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, config);
 
-  const authToken = await app.get(AuthTokenService).signToken({
-    id: 'swagger_ui_user_id',
-    tenantId: 'swagger_ui_tenant_id',
-    role: 'admin',
-  });
+    const authToken = await app.get(AuthTokenService).signToken({
+      id: 'swagger_ui_user_id',
+      tenantId: 'swagger_ui_tenant_id',
+      role: 'admin',
+    });
 
-  const options = {
-    swaggerOptions: {
-      authAction: {
-        jwtAuth: {
-          name: 'jwtAuth',
-          schema: {
-            description: 'Default',
-            type: 'http',
-            in: 'header',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
+    const options = {
+      swaggerOptions: {
+        authAction: {
+          jwtAuth: {
+            name: 'jwtAuth',
+            schema: {
+              description: 'Default',
+              type: 'http',
+              in: 'header',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
+            },
+            value: authToken,
           },
-          value: authToken,
         },
       },
-    },
-  };
+    };
 
-  SwaggerModule.setup('api', app, document, options);
+    SwaggerModule.setup('api', app, document, options);
+  }
 
   await app.listen(3000);
 }
