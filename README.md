@@ -60,10 +60,26 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-To create a manual migration:
+Swagger UI should be available at http://localhost:3000/api
+
+## Database
+
+Ensure that postgres is running (using `docker-compose`):
+
+```
+npm run infra
+```
+
+Create a manual migration:
 
 ```
 npm run typeorm migration:create -n ./src/migrations/NewMigration
+```
+
+Generate from entities:
+
+```
+npm run typeorm migration:generate -n ./src/migrations/NewMigration
 ```
 
 To shutdown the postgres:
