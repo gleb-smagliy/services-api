@@ -46,7 +46,7 @@ describe('ServicesController (e2e)', () => {
 
     testIdentity = {
       id: `test-user-1`,
-      tenantId: `test-tenant_${Date.now()}`,
+      tenantId: `test-tenant_${Math.floor(Math.random() * 1000000)}`,
       role: 'admin',
     };
 
