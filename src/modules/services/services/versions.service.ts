@@ -27,13 +27,6 @@ export class VersionsService {
     serviceId: string,
     createVersionDto: CreateVersionDto,
   ): Promise<GetVersionDto> {
-    console.log(
-      'VersionsService.create',
-      identity,
-      serviceId,
-      createVersionDto,
-    );
-
     const service = await this.serviceRepository.findOne({
       id: serviceId,
       tenantId: identity.tenantId,
