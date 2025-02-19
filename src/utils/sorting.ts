@@ -31,7 +31,7 @@ export function Sort<T extends readonly string[]>(values: T) {
 
       return [
         key as T[number],
-        direction.toLowerCase() == 'desc' ? 'DESC' : 'ASC',
+        direction?.toLowerCase() == 'desc' ? 'DESC' : 'ASC',
       ];
     });
   }
