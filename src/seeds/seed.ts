@@ -28,8 +28,6 @@ async function seed() {
       services.push(service);
     }
 
-    // Create 10 Version records (each version attaches to a Service)
-    // Here we attach Version i to Service i. You can change the logic as needed.
     for (let i = 1; i <= 100; i++) {
       const version = versionRepo.create({
         tenantId,

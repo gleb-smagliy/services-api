@@ -8,12 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
 
-  // Global Validation Pipe that uses class-validator and class-transformer
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, // Automatically converts payloads to DTO instances
-      whitelist: true, // Strips properties that are not part of the DTO
-      forbidNonWhitelisted: true, // Throws an error if non-whitelisted properties are present
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
       transformOptions: {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,

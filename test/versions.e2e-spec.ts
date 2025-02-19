@@ -58,7 +58,6 @@ describe('VersionsController (e2e)', () => {
     await app.close();
   });
 
-  // Helper to create a service (versions are scoped under a service)
   function createService(name: string, description: string) {
     return app.get(ServicesRepository).createOrReplace({
       name,
@@ -67,7 +66,6 @@ describe('VersionsController (e2e)', () => {
     });
   }
 
-  // Helper to create a version via the POST endpoint
   function createVersion(serviceId: string, name: string, description: string) {
     return request(app.getHttpServer())
       .post(`/services/${serviceId}/versions`)
