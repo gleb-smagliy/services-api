@@ -17,14 +17,14 @@ export class Version {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'tenant_id' })
+  @Column({ name: 'tenant_id', length: 64 })
   @Index()
   tenantId: string;
 
-  @Column()
+  @Column({ length: 256 })
   name: string;
 
-  @Column()
+  @Column({ length: 1024, nullable: true })
   description: string;
 
   @ManyToOne(() => Service, (service) => service.versions, {

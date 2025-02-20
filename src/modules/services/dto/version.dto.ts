@@ -1,6 +1,13 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Paginated } from '../../../utils/pagination';
-import { IsOptional, IsString, IsNotEmpty, IsUUID } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Expose } from 'class-transformer';
 import { Version } from '../entities/version.entity';
 
@@ -47,6 +54,8 @@ export class GetVersionsListDto extends Paginated(GetVersionDto) {}
 export class CreateVersionDto {
   @IsNotEmpty()
   @IsString()
+  @MaxLength(256)
+  @MinLength(1)
   @ApiProperty({
     description: 'The name of the version',
     example: 'v1.0.0',
@@ -60,6 +69,8 @@ export class CreateVersionDto {
     description: 'The description of the version',
     example: 'Initial release',
   })
+  @MaxLength(1024)
+  @MinLength(1)
   @Expose()
   description?: string;
 }

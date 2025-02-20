@@ -1,7 +1,7 @@
 import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger';
 import { SearchQuery } from '../../../utils/search';
 import { PaginationQuery, Paginated } from '../../../utils/pagination';
-import { IsOptional } from 'class-validator';
+import { IsOptional, MaxLength, MinLength } from 'class-validator';
 import { IsString } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
 import { Expose } from 'class-transformer';
@@ -55,6 +55,8 @@ export class CreateServiceDto {
     description: 'The name of the service',
     example: 'Service 1',
   })
+  @MaxLength(256)
+  @MinLength(1)
   @Expose()
   name: string;
 
@@ -64,6 +66,8 @@ export class CreateServiceDto {
     description: 'The description of the service',
     example: `Service 1's responsibility is mysterious and important`,
   })
+  @MaxLength(1024)
+  @MinLength(1)
   @Expose()
   description?: string;
 }
