@@ -12,7 +12,7 @@ import {
 import { Service } from './service.entity';
 
 @Entity({ name: 'versions' })
-@Index(['tenantId', 'service'])
+@Index(['service'])
 export class Version {
   @PrimaryGeneratedColumn('uuid')
   id: string;
