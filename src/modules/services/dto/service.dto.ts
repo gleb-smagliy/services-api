@@ -25,9 +25,9 @@ export class GetServiceDto {
   @Expose()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @Expose()
-  description: string;
+  description: string | null;
 
   @ApiProperty()
   @Expose()

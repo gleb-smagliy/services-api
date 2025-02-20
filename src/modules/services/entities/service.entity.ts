@@ -21,6 +21,7 @@ export class Service {
   tenantId: string;
 
   @Column({ length: 256 })
+  @Index()
   name: string;
 
   @Column({ length: 1024, nullable: true })

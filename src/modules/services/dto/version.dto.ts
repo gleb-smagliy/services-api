@@ -32,9 +32,9 @@ export class GetVersionDto {
   @Expose()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @Expose()
-  description: string;
+  description: string | null;
 
   @ApiProperty()
   @Expose()
@@ -68,6 +68,7 @@ export class CreateVersionDto {
   @ApiProperty({
     description: 'The description of the version',
     example: 'Initial release',
+    nullable: true,
   })
   @MaxLength(1024)
   @MinLength(1)
