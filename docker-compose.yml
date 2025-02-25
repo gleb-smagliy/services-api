@@ -11,14 +11,34 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  db_test:
-    image: postgres
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  # db_test:
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   ports:
+  #     - '${DB_PORT}:5432'
+
+  services-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
-      - '${DB_PORT}:5432'
+      - '3000:3000'
+      - '9229:9229' # Map the debug port to host for Node inspector.
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
+    depends_on:
+      - postgres
+    command: ['node', '--inspect=0.0.0.0:9229', 'dist/main.js']
 
 volumes:
   postgres-data:

@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: localhost:5000/services-api
+  tag: latest
+  pullPolicy: Always
+
+debug:
+  enabled: true
+  inspectPort: 9229
+
+service:
+  type: NodePort
+  port: 3000
+  debugPort: 9229
+
+env:
+  NODE_ENV: production
+  JWT_EXPIRATION_TIME: '24h'
+  DB_HOST: postgres
+  DB_PORT: '5432'
+  DB_USER: 'postgres'
+  DB_PASSWORD: 'postgres'
+  DB_NAME: 'services_api'
+
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5432
+  persistence:
+    enabled: true
+    storageClass: ''
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  # env:
+  #   POSTGRES_USER: 'user'
+  #   POSTGRES_PASSWORD: 'password'
+  #   POSTGRES_DB: 'database'

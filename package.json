@@ -1,6 +1,7 @@
 {
   "name": "services-api",
   "version": "0.0.1",
+  "packageManager": "npm@8.0.0",
   "description": "",
   "author": "",
   "private": true,
@@ -10,6 +11,8 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/modules/database/data-source.ts",
     "seed": "ts-node -r tsconfig-paths/register ./src/seeds/seed.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "build-docker": "docker build -t services-api:latest .",
+    "push-docker": "docker tag services-api:latest localhost:5000/services-api:latest && docker push localhost:5000/services-api:latest",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -61,6 +64,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "4.2.0",
+    "turbo": "^2.4.2",
     "typescript": "^5.7.3"
   },
   "jest": {

@@ -12,6 +12,8 @@ export const IdentityContext = createParamDecorator(
       throw new UnauthorizedException('Identity is not set');
     }
 
+    console.log('=== request.identity ===', request.identity);
+
     return request.identity;
   },
 );

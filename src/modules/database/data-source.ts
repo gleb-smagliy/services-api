@@ -4,6 +4,8 @@ import * as path from 'path';
 
 dotenv.config();
 
+const migrate = process.argv.includes('migrate');
+
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
@@ -12,7 +14,8 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   synchronize: false,
-  migrationsRun: process.env.NODE_ENV !== 'production',
+  migrationsRun: process.env.NODE_ENV !== 'production' && migrate,
+  logging: migrate ? 'all' : false,
   entities: [path.resolve(__dirname, '../**/*.entity.{js,ts}')],
   migrations: [path.resolve(__dirname, '../../migrations/*.{js,ts}')],
 });

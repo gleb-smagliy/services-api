@@ -3,8 +3,10 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { AuthTokenService } from './modules/identity/auth-token.service';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from './modules/database/data-source';
 
-async function bootstrap() {
+async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
 
@@ -27,7 +29,7 @@ async function bootstrap() {
     }),
   );
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (true) {
     const config = new DocumentBuilder()
       .setTitle('Services API')
       .setDescription('API documentation for Services')
@@ -73,4 +75,33 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
+
+async function bootstrapDb() {
+  // const app = await NestFactory.createApplicationContext(AppModule);
+  // const dataSource = app.get(DataSource);
+  // // await dataSource.initialize();
+  // await dataSource.runMigrations();
+
+  console.log('=== process.env.NODE_ENV ===', process.env.NODE_ENV);
+
+  await AppDataSource.initialize();
+  await AppDataSource.runMigrations();
+}
+
+async function bootstrap() {
+  try {
+    if (process.argv.includes('migrate')) {
+      console.log('===Running migrations ===');
+      await bootstrapDb();
+    } else {
+      console.log('=== Starting application ===');
+      await bootstrapApp();
+    }
+  } catch (err) {
+    console.error('Error starting application', err);
+
+    process.exit(1);
+  }
+}
+
 bootstrap();
